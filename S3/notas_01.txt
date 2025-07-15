@@ -1,0 +1,81 @@
+# AWS CLI AUTO PROMPT
+aws --cli-auto-prompt
+
+
+# 1) Listar Buckets
+
+## S3
+aws s3 ls
+
+## S3api
+aws s3api list-buckets
+
+
+# 2) Listar contenido dentro de un bucket
+
+## S3
+aws s3 ls s3://mi-bucket/
+
+
+## S3api
+aws s3api list-objects --bucket mi-bucket
+aws s3api list-buckets --query "Buckets[].Name" --output text # sólo nombres
+
+
+# 3) Subir un archivo a S3
+
+## S3
+aws s3 cp archivo.txt s3://mi-bucket/
+
+
+## S3api
+aws s3api put-object --bucket mi-bucket --key archivo.txt --body archivo.txt
+
+
+# 4) Descargar un archivo desde S3
+
+## S3
+aws s3 cp s3://mi-bucket/archivo.txt .
+
+
+## S3api
+aws s3api get-object --bucket mi-bucket --key archivo.txt archivo.txt
+
+
+# 5) Eliminar un archivo en S3
+
+## S3
+aws s3 rm s3://mi-bucket/archivo.txt
+
+
+## S3api
+aws s3api delete-object --bucket mi-bucket --key archivo.txt
+
+
+# 6) Crear un bucket
+
+## S3api
+aws s3api create-bucket --bucket mi-bucket --region us-east-1
+
+
+# 7) Crear folders dentro un bucker
+
+## S3
+aws s3 cp archivo.txt s3://mi-bucket/proyectos/cliente1/archivo.txt
+
+
+## S3api
+aws s3api put-object --bucket mi-bucket --key proyectos/cliente1/
+
+
+# 8) Revisar archivos que se encuentran en una bucket
+
+## S4
+aws s3 ls s3://mi-bucket/ --recursive
+
+
+# 9) Modificar un archivo
+aws s3 cp s3://pruebas-s3-0725/folder_02/file_02_01.txt . # se tiene que bajar primero a la raíz
+nano file_02_01.txt # aquí se tendrían que hacer cambios desde la raíz
+aws s3 cp file_02_01.txt s3://pruebas-s3-0725/folder_02/file_02_01.txt # se regresa a su carpeta original
+rm file_02_01.txt # eliminar de la raíz
