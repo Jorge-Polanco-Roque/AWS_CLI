@@ -1,0 +1,9 @@
+# Ver instancias activas
+aws ec2 describe-instances --query 'Reservations[*].Instances[*].InstanceId'
+
+# Iniciar una instancia
+aws ec2 start-instances --instance-ids i-xxxxxxxxxxxxxxxxx
+
+# Detener una instancia
+aws ec2 stop-instances --instance-ids i-xxxxxxxxxxxxxxxxx
+

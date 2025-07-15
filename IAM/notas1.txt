@@ -1,0 +1,6 @@
+# Ver usuarios
+aws iam list-users
+
+# Ver políticas adjuntas a un usuario
+aws iam list-attached-user-policies --user-name nombre_usuario
+
