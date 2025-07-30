@@ -1,0 +1,17 @@
+# Buscar los grupos de logs
+aws logs describe-log-groups \
+  --query "logGroups[?starts_with(logGroupName, '/ecs/')].logGroupName" \
+  --output table
+
+
+# Buscar los tasks en ejecución de un clúster
+aws ecs list-tasks \
+  --cluster aws-architect-battle-arena-cluster
+
+
+# Describe las tareas de ese contenedor
+aws ecs describe-tasks \
+  --cluster aws-architect-battle-arena-cluster \
+  --tasks arn:aws:ecs:us-east-1:123456789012:task/aws-architect-battle-arena-cluster/abc123...
+
+

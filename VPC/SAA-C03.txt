@@ -1,0 +1,56 @@
+# Creating the First VPC
+aws ec2 create-vpc --cidr-block 10.0.0.0/16
+
+# Creating Subnets for the First VPC
+
+## Public Subnets
+aws ec2 create-subnet --vpc-id <VpcId> --cidr-block 10.0.1.0/24 --availability-zone us-east-1b
+aws ec2 create-subnet --vpc-id <VpcId> --cidr-block 10.0.2.0/24 --availability-zone us-east-1c
+
+## Private Subnets
+aws ec2 create-subnet --vpc-id <VpcId> --cidr-block 10.0.3.0/24 --availability-zone us-east-1b
+aws ec2 create-subnet --vpc-id <VpcId> --cidr-block 10.0.4.0/24 --availability-zone us-east-1c
+
+# Setting up an Internet Gateway for the First VPC
+
+## First time
+aws ec2 create-internet-gateway
+
+## Use the InternetGatewayId in the next step
+aws ec2 attach-internet-gateway --vpc-id <VpcId> --internet-gateway-id <InternetGatewayId>
+
+# Setting up a NAT Gateway for the First VPC
+
+## Allocate an elastic IP
+aws ec2 allocate-address
+
+## Create a NAT gateway
+aws ec2 create-nat-gateway --subnet-id <SubnetId> --allocation-id <AllocationId>
+
+# Configuring Route Tables for the First VPC
+aws ec2 describe-route-tables --filters "Name=vpc-id,Values=<VpcId>"
+
+# Public route table
+aws ec2 create-route --route-table-id <RouteTableId> --destination-cidr-block 0.0.0.0/0 --gateway-id <InternetGatewayId>
+
+# Private route table
+aws ec2 create-route-table --vpc-id <VpcId>
+
+# Setting up VPC Peering
+
+## Initiate and accept VPC peering
+aws ec2 create-vpc-peering-connection --vpc-id <VpcId> --peer-vpc-id <VpcId>
+
+## Now accept the request from the peer VPC using the following command
+aws ec2 accept-vpc-peering-connection --vpc-peering-connection-id <VpcPeeringConnectionId>
+
+## Add routes in the route tables of both VPCs for peering:
+aws ec2 create-route --route-table-id <RouteTableId> --destination-cidr-block 10.1.0.0/16 --vpc-peering-connection-id <VpcPeeringConnectionId>
+aws ec2 create-route --route-table-id <RouteTableId> --destination-cidr-block 10.0.0.0/16 --vpc-peering-connection-id <VpcPeeringConnectionId>
+
+
+
+
+
+
+
